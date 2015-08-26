@@ -3,6 +3,13 @@
 # terminate script as soon as any command fails
 set -e
 
+# If a "WHEN" argument exists and the current hour doesn't match it, exit.
+HOUR=$(date +"%k")
+if ! [[ -z "$WHEN" ]] && ! [[ "$WHEN" =~ $HOUR ]] ; then
+  echo "When argument exists and current hour doesn't match it"
+  exit 0
+fi
+
 if [[ -z "$APP" ]]; then
   echo "Missing APP variable which must be set to the name of your app where the db is located"
   exit 1
