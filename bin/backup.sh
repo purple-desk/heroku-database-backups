@@ -4,9 +4,9 @@
 set -e
 
 # If a "WHEN" argument exists and the current hour doesn't match it, exit.
-HOUR=$(date +"%k")
+HOUR=$(date +"%H")
 if ! [[ -z "$WHEN" ]] && ! [[ "$WHEN" =~ $HOUR ]] ; then
-  echo "When argument exists and current hour doesn't match it"
+  echo "Current HOUR doesn't match the WHEN argument"
   exit 0
 fi
 
@@ -25,7 +25,7 @@ if [[ -z "$S3_BUCKET_PATH" ]]; then
   exit 1
 fi
 
-#install aws-cli
+# Install AWS CLI
 curl https://s3.amazonaws.com/aws-cli/awscli-bundle.zip -o awscli-bundle.zip
 unzip awscli-bundle.zip
 chmod +x ./awscli-bundle/install
