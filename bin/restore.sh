@@ -130,6 +130,9 @@ RESTORE_FILE_URL=$(generateSignURL "" "$S3_BUCKET_PATH" "temp/latest.dump" "$AWS
 # Run outstanding migrations if there are any.
 /app/vendor/heroku-toolbelt/bin/heroku run python eduapi/manage.py migrate --app $DEST_APP
 
+# Reindex the Elastic Search based on the data that was migrated.
+/app/vendor/heroku-toolbelt/bin/heroku run python eduapi/manage.py rebuild_index --app $DEST_APP
+
 # Delete the temporary file.
 /tmp/aws/bin/aws s3 rm s3://$S3_BUCKET_PATH/temp/latest.dump
 
