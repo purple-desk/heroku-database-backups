@@ -127,6 +127,9 @@ RESTORE_FILE_URL=$(generateSignURL "" "$S3_BUCKET_PATH" "temp/latest.dump" "$AWS
 # Restore the target database using the DB file.
 /app/vendor/heroku-toolbelt/bin/heroku pg:backups restore "$RESTORE_FILE_URL" DATABASE_URL --confirm $DEST_APP --app $DEST_APP
 
+# Run outstanding migrations if there are any.
+/app/vendor/heroku-toolbelt/bin/heroku run python eduapi/manage.py migrate --app $DEST_APP
+
 # Delete the temporary file.
 /tmp/aws/bin/aws s3 rm s3://$S3_BUCKET_PATH/temp/latest.dump
 
